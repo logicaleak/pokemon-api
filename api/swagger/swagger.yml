@@ -1,0 +1,41 @@
+consumes:
+- application/json
+info:
+  description: Pokemon shakespeare api
+  title: A pokemon api
+  version: 1.0.0
+paths: {}
+produces:
+- application/json
+schemes:
+- http
+swagger: "2.0"
+definitions:
+  pokemon:
+    $ref: "modelsdefinitions/pokemon.yml#/pokemon"
+  error:
+    type: object
+    required:
+      - message
+    properties:
+      code:
+        type: integer
+        format: int64
+      message:
+        type: string
+paths:
+  /:
+    get:
+      tags:
+        - pokemons
+      responses:
+        200:
+          description: List pokemons
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/pokemon"
+        default:
+            description: generic error response
+            schema:
+              $ref: "#/definitions/error" 
