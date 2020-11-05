@@ -9,7 +9,7 @@ import (
 
 // PokeAPI is the unimplemented pokeapi interface consisting of necessary endpoint methods
 type PokeAPI interface {
-	GetPokemon(string) (*Pokemon, error)
+	GetPokemonSpecies(string) (*PokemonSpecies, error)
 }
 
 type pokeAPIImpl struct {
@@ -26,7 +26,7 @@ func NewPokeAPI(config *config.Config) PokeAPI {
 }
 
 // GetPokemon returns the pokemon object from the poke-api
-func (p *pokeAPIImpl) GetPokemon(name string) (*Pokemon, error) {
+func (p *pokeAPIImpl) GetPokemonSpecies(name string) (*PokemonSpecies, error) {
 	resp, err := p.restyClient.R().
 		EnableTrace().
 		Get(p.baseURI + pokemon)
@@ -34,11 +34,11 @@ func (p *pokeAPIImpl) GetPokemon(name string) (*Pokemon, error) {
 		return nil, err
 	}
 
-	var pokemon Pokemon
-	err = json.Unmarshal(resp.Body(), &pokemon)
+	var pokemonSpecies PokemonSpecies
+	err = json.Unmarshal(resp.Body(), &pokemonSpecies)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pokemon, nil
+	return &pokemonSpecies, nil
 }
