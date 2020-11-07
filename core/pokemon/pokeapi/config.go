@@ -1,5 +1,5 @@
 package pokeapi
 
 const (
-	pokemon = "/pokemon"
+	pokemonSpecies = "/pokemon"
 )

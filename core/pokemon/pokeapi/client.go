@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 
 	resty "github.com/go-resty/resty/v2"
-	"ozum.safaoglu/pokemon-api/config"
 )
 
 // PokeAPI is the unimplemented pokeapi interface consisting of necessary endpoint methods
@@ -19,10 +18,10 @@ type pokeAPIImpl struct {
 }
 
 // NewPokeAPI returns a new PokeAPI implementation
-func NewPokeAPI(config *config.Config) PokeAPI {
+func NewPokeAPI(baseURI string) PokeAPI {
 	return &pokeAPIImpl{
 		restyClient: resty.New(),
-		baseURI:     config.PokeAPIBaseURI.String(),
+		baseURI:     baseURI,
 	}
 }
 
@@ -31,7 +30,7 @@ func (p *pokeAPIImpl) GetPokemonSpecies(ctx context.Context, name string) (*Poke
 	resp, err := p.restyClient.R().
 		SetContext(ctx).
 		EnableTrace().
-		Get(p.baseURI + pokemon)
+		Get(p.baseURI + pokemonSpecies + "/" + name)
 	if err != nil {
 		return nil, err
 	}

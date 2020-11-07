@@ -7,5 +7,11 @@ type PokemonSpecies struct {
 
 // FlavourTextEntries is the description entries for the pokemon
 type FlavourTextEntries struct {
-	FlavorText string `json:"flavor_text"`
+	FlavorText string   `json:"flavor_text"`
+	Language   Language `json:"language"`
+}
+
+// Language for flavour text entry
+type Language struct {
+	Name string `json:"name"`
 }
