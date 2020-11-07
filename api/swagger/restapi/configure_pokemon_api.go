@@ -6,9 +6,10 @@ import (
 	"crypto/tls"
 	"net/http"
 
+	"ozum.safaoglu/pokemon-api/api/swagger/implementation"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
 
 	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations"
 	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemons"
@@ -39,9 +40,7 @@ func configureAPI(api *operations.PokemonAPIAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	if api.PokemonsGetHandler == nil {
-		api.PokemonsGetHandler = pokemons.GetHandlerFunc(func(params pokemons.GetParams) middleware.Responder {
-			return middleware.NotImplemented("operation pokemons.Get has not yet been implemented")
-		})
+		api.PokemonsGetHandler = pokemons.GetHandlerFunc(implementation.GetPokemon)
 	}
 
 	api.PreServerShutdown = func() {}
