@@ -8,10 +8,12 @@ import (
 	resty "github.com/go-resty/resty/v2"
 )
 
+// Client is an interface for shakespeare api integration
 type Client interface {
 	Translate(context.Context, string) (*Translation, error)
 }
 
+// NewClient returns the default client implementation
 func NewClient(uri string) Client {
 	return &clientImpl{
 		uri:         uri,
