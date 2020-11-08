@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"ozum.safaoglu/pokemon-api/cache"
 )
 
@@ -48,6 +49,7 @@ func Test_cachedPokeAPI_GetPokemonSpecies_CallsAPI_WithoutCache(t *testing.T) {
 
 	cache := &cache.MockCache{}
 	cache.On("Get", ctx, pokemonSpeciesCacheKeyPrefix+pokemon).Return("", nil)
+	cache.On("Set", ctx, pokemonSpeciesCacheKeyPrefix+pokemon, mock.Anything, mock.Anything).Return(nil).Once()
 
 	pokeAPI := &MockPokeAPI{}
 	pokeAPI.On("GetPokemonSpecies", ctx, pokemon).Return(pokemonSpecies, nil)
@@ -55,6 +57,8 @@ func Test_cachedPokeAPI_GetPokemonSpecies_CallsAPI_WithoutCache(t *testing.T) {
 	cachedPokeAPI := NewCachedPokeAPI(pokeAPI, cache)
 	species, err := cachedPokeAPI.GetPokemonSpecies(ctx, pokemon)
 	assert.Nil(t, err)
-	pokeAPI.AssertNotCalled(t, "GetPokemonSpecies")
+	pokeAPI.AssertNumberOfCalls(t, "GetPokemonSpecies", 1)
 	assert.Equal(t, pokemonSpecies, species)
+
+	cache.AssertExpectations(t)
 }

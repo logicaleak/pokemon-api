@@ -3,6 +3,7 @@ package pokeapi
 import (
 	"context"
 	"encoding/json"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"ozum.safaoglu/pokemon-api/cache"
@@ -28,8 +29,20 @@ func NewCachedPokeAPI(pokeAPI PokeAPI, cache cache.Cache) PokeAPI {
 	}
 }
 
+func (c *cachedPokeAPI) generateCacheKey(name string) string {
+	return pokemonSpeciesCacheKeyPrefix + name
+}
+
+func (c *cachedPokeAPI) marshalForCache(species *PokemonSpecies) (string, error) {
+	bytes, err := json.Marshal(species)
+	if err != nil {
+		return "", err
+	}
+	return string(bytes), nil
+}
+
 func (c *cachedPokeAPI) GetPokemonSpecies(ctx context.Context, name string) (*PokemonSpecies, error) {
-	val, err := c.cache.Get(ctx, pokemonSpeciesCacheKeyPrefix+name)
+	val, err := c.cache.Get(ctx, c.generateCacheKey(name))
 	if err != nil {
 		return nil, err
 	}
@@ -42,5 +55,19 @@ func (c *cachedPokeAPI) GetPokemonSpecies(ctx context.Context, name string) (*Po
 			return &pokemonSpecies, nil
 		}
 	}
-	return c.pokeAPI.GetPokemonSpecies(ctx, name)
+	species, err := c.pokeAPI.GetPokemonSpecies(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+	marshalled, err := c.marshalForCache(species)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.cache.Set(ctx, c.generateCacheKey(name), marshalled, time.Second*10)
+	if err != nil {
+		logrus.Warnf("Error while setting the cache for pokemon species: %s", err)
+	}
+
+	return species, nil
 }
