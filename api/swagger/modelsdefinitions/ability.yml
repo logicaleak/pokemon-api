@@ -1,9 +1,0 @@
-ability:
-    type: object
-    properties:
-      name:
-        type: string
-        readOnly: true
-      url:
-        type: string
-      

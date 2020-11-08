@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/go-redis/redis/v8"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"ozum.safaoglu/pokemon-api/cache"
 )
@@ -58,10 +60,10 @@ func (c *cachedSPClient) marshalForCache(translation *Translation) (string, erro
 func (c *cachedSPClient) Translate(ctx context.Context, text string) (*Translation, error) {
 	cacheKey, err := c.generateCacheKey(text)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "Error while getting translation cache")
 	}
 	val, err := c.cache.Get(ctx, cacheKey)
-	if err != nil {
+	if err != nil && err != redis.Nil {
 		return nil, err
 	}
 	if val != "" {

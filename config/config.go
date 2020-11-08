@@ -1,22 +1,32 @@
 package config
 
 import (
-	"github.com/kelseyhightower/envconfig"
+	"fmt"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 // Config is the app configuration object
 type Config struct {
-	PokeapiBaseURL     string
-	ShakespeareBaseURL string
+	PokeapiBaseUrl     string
+	ShakespeareBaseUrl string
 	RedisAddr          string
 }
 
 // CFG Global config of the app
-var CFG *Config
+var CFG Config
 
 func init() {
-	err := envconfig.Process("pokemonapi", CFG)
-	if err != nil {
-		panic(err)
+	env := os.Getenv("ENV")
+	fmt.Println(env)
+	godotenv.Load(".env." + env)
+
+	CFG = Config{
+		PokeapiBaseUrl:     os.Getenv("POKEMONAPI_POKEAPI_BASE_URL"),
+		ShakespeareBaseUrl: os.Getenv("POKEMONAPI_POKEAPI_SHAKESPEARE_BASE_URL"),
+		RedisAddr:          os.Getenv("POKEMONAPI_REDIS_ADDR"),
 	}
+
+	fmt.Println(CFG)
 }

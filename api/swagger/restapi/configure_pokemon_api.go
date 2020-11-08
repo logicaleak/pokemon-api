@@ -6,19 +6,22 @@ import (
 	"crypto/tls"
 	"net/http"
 
-	"ozum.safaoglu/pokemon-api/api/swagger/implementation"
-
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 
+	"ozum.safaoglu/pokemon-api/api/swagger/implementation"
 	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations"
-	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemons"
+	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemondescription"
 )
 
 //go:generate swagger generate server --target ../../swagger --name PokemonAPI --spec ../swagger.yml --principal interface{}
 
 func configureFlags(api *operations.PokemonAPIAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
+}
+
+func loadImplementation() *implementation.ShakespeareanPokemonAPI {
+	return implementation.NewShakespeareanPokemonAPI()
 }
 
 func configureAPI(api *operations.PokemonAPIAPI) http.Handler {
@@ -39,9 +42,7 @@ func configureAPI(api *operations.PokemonAPIAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.PokemonsGetHandler == nil {
-		api.PokemonsGetHandler = pokemons.GetHandlerFunc(implementation.GetPokemon)
-	}
+	api.PokemondescriptionGetPokemonNameHandler = pokemondescription.GetPokemonNameHandlerFunc(loadImplementation().GetPokemonDescription)
 
 	api.PreServerShutdown = func() {}
 

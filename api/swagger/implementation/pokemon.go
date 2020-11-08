@@ -4,8 +4,11 @@ import (
 	"context"
 	"time"
 
+	"ozum.safaoglu/pokemon-api/api/swagger/models"
+	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemondescription"
+
 	"github.com/go-openapi/runtime/middleware"
-	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemons"
+	"github.com/sirupsen/logrus"
 	"ozum.safaoglu/pokemon-api/cache"
 	"ozum.safaoglu/pokemon-api/config"
 	"ozum.safaoglu/pokemon-api/core/pokemon/pokeapi"
@@ -18,8 +21,8 @@ type ShakespeareanPokemonAPI struct {
 }
 
 func NewShakespeareanPokemonAPI() *ShakespeareanPokemonAPI {
-	pokeAPI := pokeapi.NewPokeAPI(config.CFG.PokeapiBaseURL)
-	spClient := shakespeare.NewClient(config.CFG.ShakespeareBaseURL)
+	pokeAPI := pokeapi.NewPokeAPI(config.CFG.PokeapiBaseUrl)
+	spClient := shakespeare.NewClient(config.CFG.ShakespeareBaseUrl)
 
 	cache, err := cache.NewRedis(config.CFG.RedisAddr, "")
 	if err != nil {
@@ -28,17 +31,28 @@ func NewShakespeareanPokemonAPI() *ShakespeareanPokemonAPI {
 	cachedPokeAPI := pokeapi.NewCachedPokeAPI(pokeAPI, cache)
 	cachedSPClient := shakespeare.NewCachedSPClient(spClient, cache)
 
-	&ShakespeareanPokemonAPI{
-		spService: service.NewShakespeareanPokemon(cachedPokeAPI, cachedSPClient, "en")
-	} 
+	return &ShakespeareanPokemonAPI{
+		spService: service.NewShakespeareanPokemon(cachedPokeAPI, cachedSPClient, "en"),
+	}
 }
 
 // GetPokemon implements the swagger api endpoint
 // It returns the description of the passed pokemon in shakespearean English
-func (s *ShakespeareanPokemonAPI) GetPokemon(params pokemons.GetParams) middleware.Responder {
-	// ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
-	// defer cancel()
-	// s.spService.GetDescription(ctx, params)
+func (s *ShakespeareanPokemonAPI) GetPokemonDescription(params pokemondescription.GetPokemonNameParams) middleware.Responder {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
+	defer cancel()
+	description, err := s.spService.GetDescription(ctx, params.Name)
+	if err != nil {
+		logrus.WithError(err).Errorf("Error while getting description of the pokemon")
+		errStr := "An error occurred"
+		return pokemondescription.NewGetPokemonNameDefault(500).WithPayload(&models.Error{
+			Code:    500,
+			Message: &errStr,
+		})
+	}
 
-	return middleware.NotImplemented("operation pokemons.Get has not yet been implemented")
+	return pokemondescription.NewGetPokemonNameOK().WithPayload(&models.Description{
+		Description: description.Description,
+		Name:        description.Name,
+	})
 }

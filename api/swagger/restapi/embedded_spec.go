@@ -34,19 +34,16 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/": {
+    "/pokemon/{name}": {
       "get": {
         "tags": [
-          "pokemons"
+          "pokemondescription"
         ],
         "responses": {
           "200": {
-            "description": "List pokemons",
+            "description": "Describes a pokemon",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/pokemon"
-              }
+              "$ref": "#/definitions/description"
             }
           },
           "default": {
@@ -56,10 +53,21 @@ func init() {
             }
           }
         }
-      }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "name",
+          "in": "path",
+          "required": true
+        }
+      ]
     }
   },
   "definitions": {
+    "description": {
+      "$ref": "modelsdefinitions/description.yml#/Description"
+    },
     "error": {
       "type": "object",
       "required": [
@@ -74,9 +82,6 @@ func init() {
           "type": "string"
         }
       }
-    },
-    "pokemon": {
-      "$ref": "modelsdefinitions/pokemon.yml#/pokemon"
     }
   }
 }`))
@@ -97,19 +102,16 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/": {
+    "/pokemon/{name}": {
       "get": {
         "tags": [
-          "pokemons"
+          "pokemondescription"
         ],
         "responses": {
           "200": {
-            "description": "List pokemons",
+            "description": "Describes a pokemon",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/pokemon"
-              }
+              "$ref": "#/definitions/description"
             }
           },
           "default": {
@@ -119,10 +121,31 @@ func init() {
             }
           }
         }
-      }
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "name",
+          "in": "path",
+          "required": true
+        }
+      ]
     }
   },
   "definitions": {
+    "description": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
     "error": {
       "type": "object",
       "required": [
@@ -135,26 +158,6 @@ func init() {
         },
         "message": {
           "type": "string"
-        }
-      }
-    },
-    "pokemon": {
-      "type": "object",
-      "required": [
-        "description"
-      ],
-      "properties": {
-        "completed": {
-          "type": "boolean"
-        },
-        "description": {
-          "type": "string",
-          "minLength": 1
-        },
-        "id": {
-          "type": "integer",
-          "format": "int64",
-          "readOnly": true
         }
       }
     }

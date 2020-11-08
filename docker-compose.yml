@@ -4,7 +4,14 @@ services:
     build: .
     environment:
       PORT: 8080
+      ENV: "local"
+      POKEMONAPI_REDIS_ADDR: "redis:6379"
     ports:
-      - "8080:8080"
+        - "8080:8080"
+    links:
+      - redis
+    restart: unless-stopped 
   redis:
     image: "redis:alpine"
+    ports:
+      - "6379:6379"

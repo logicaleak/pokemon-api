@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/pkg/errors"
+
+	"github.com/go-redis/redis/v8"
 	"github.com/sirupsen/logrus"
 	"ozum.safaoglu/pokemon-api/cache"
 )
@@ -43,8 +46,8 @@ func (c *cachedPokeAPI) marshalForCache(species *PokemonSpecies) (string, error)
 
 func (c *cachedPokeAPI) GetPokemonSpecies(ctx context.Context, name string) (*PokemonSpecies, error) {
 	val, err := c.cache.Get(ctx, c.generateCacheKey(name))
-	if err != nil {
-		return nil, err
+	if err != nil && err != redis.Nil {
+		return nil, errors.Wrap(err, "Error while getting pokemon species cache")
 	}
 	if val != "" {
 		var pokemonSpecies PokemonSpecies

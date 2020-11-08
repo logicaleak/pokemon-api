@@ -11,8 +11,8 @@ schemes:
 - http
 swagger: "2.0"
 definitions:
-  pokemon:
-    $ref: "modelsdefinitions/pokemon.yml#/pokemon"
+  description:
+    $ref: "modelsdefinitions/description.yml#/Description"
   error:
     type: object
     required:
@@ -24,18 +24,21 @@ definitions:
       message:
         type: string
 paths:
-  /:
+  /pokemon/{name}:
+    parameters:
+      - type: string
+        name: name
+        in: path
+        required: true
     get:
       tags:
-        - pokemons
+        - pokemondescription
       responses:
         200:
-          description: List pokemons
+          description: Describes a pokemon
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/pokemon"
+            $ref: "#/definitions/description"
         default:
-            description: generic error response
-            schema:
-              $ref: "#/definitions/error" 
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
