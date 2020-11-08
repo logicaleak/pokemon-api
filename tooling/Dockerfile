@@ -13,10 +13,9 @@ RUN gox --osarch "linux/amd64" -output /swagger \
       "${REPO}"
 
 
-FROM alpine:3.12
+FROM golang:1.15.2-alpine3.12
 RUN apk add --update --no-cache make
 COPY --from=build /swagger /usr/bin/swagger
 
-RUN mkdir /go
 ENV GOPATH=/go
 WORKDIR /app

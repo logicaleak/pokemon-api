@@ -1,0 +1,1 @@
+docker run --rm -v ${PWD}:/app tooling make $1
