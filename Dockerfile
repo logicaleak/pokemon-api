@@ -1,4 +1,4 @@
-FROM golang:1.14
+FROM golang:alpine
 
 WORKDIR /app
 
@@ -11,6 +11,6 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build cmd/main.go
 
-EXPOSE 6390
+EXPOSE 8080
 
-CMD [ "./main", "--port", "6390" ]
+CMD [ "./main", "--port", "8080", "--host", "0.0.0.0" ]

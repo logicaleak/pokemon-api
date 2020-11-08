@@ -3,7 +3,6 @@ services:
   api:
     build: .
     environment:
-      PORT: 8080
       ENV: "local"
       POKEMONAPI_REDIS_ADDR: "redis:6379"
     ports:

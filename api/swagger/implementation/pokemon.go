@@ -6,10 +6,10 @@ import (
 
 	"ozum.safaoglu/pokemon-api/api/swagger/models"
 	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemondescription"
+	"ozum.safaoglu/pokemon-api/cache"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/sirupsen/logrus"
-	"ozum.safaoglu/pokemon-api/cache"
 	"ozum.safaoglu/pokemon-api/config"
 	"ozum.safaoglu/pokemon-api/core/pokemon/pokeapi"
 	"ozum.safaoglu/pokemon-api/core/service"
