@@ -1,8 +1,7 @@
 package config
 
-import "net/url"
-
+// Config is the app configuration object
 type Config struct {
-	PokeAPIBaseURI url.URL
-	ShakespeareURI url.URL
+	PokeapiBaseURL     string
+	ShakespeareBaseURL string
 }
