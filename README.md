@@ -60,6 +60,11 @@ Execute the following, which will create a container named `tooling` that is wor
 ```bash
 bin/prepare.sh
 ```
+If permission is denied, run
+
+```bash
+chmod u+x bin/prepare.sh
+```
 
 ## Runing the tests
 
@@ -67,3 +72,27 @@ bin/prepare.sh
 bin/make.sh unit-tests
 ```
 This command will run the makefile target `unit-tests` within the `tooling` container.
+
+## Generating swagger files
+To generate new swagger files if any change to `swagger.yml` is made. Run the following:
+
+```bash
+bin/make.sh swagger
+```
+
+## Running the project
+To run the project simply use the `docker-compose`.
+
+```bash
+docker-compose up
+```
+
+If for some reason, docker compose is not accessable, redis and the app can be run seperately like the following:
+
+```bash
+docker build -t pokemon-api .
+docker run -d -p 6379:6379 redis
+docker run -d -p 8080:8080 --env ENV=local pokemon-api:latest
+```
+
+Redis has to be run first as the app is dependent on it for caching purposes

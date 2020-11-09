@@ -39,12 +39,18 @@ func Test_defaultShakespeareanPokemonImpl_generateDescriptionFrom(t *testing.T) 
 								Name: "en",
 							},
 							FlavorText: "First sentence of the entry.",
+							Version: pokeapi.Version{
+								Name: "ruby",
+							},
 						},
 						{
 							Language: pokeapi.Language{
 								Name: "en",
 							},
 							FlavorText: "Second sentence of the entry.",
+							Version: pokeapi.Version{
+								Name: "ruby",
+							},
 						},
 					},
 				},
@@ -79,12 +85,18 @@ func Test_defaultShakespeareanPokemonImpl_GetDescription(t *testing.T) {
 					Name: "en",
 				},
 				FlavorText: flavorTextOne,
+				Version: pokeapi.Version{
+					Name: "ruby",
+				},
 			},
 			{
 				Language: pokeapi.Language{
 					Name: "en",
 				},
 				FlavorText: flavorTextTwo,
+				Version: pokeapi.Version{
+					Name: "ruby",
+				},
 			},
 		},
 	}, nil)
