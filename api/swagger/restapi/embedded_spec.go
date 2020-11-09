@@ -34,7 +34,7 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/v1/pokemon/description/{name}": {
+    "/v1/pokemon/{pokemonName}": {
       "get": {
         "tags": [
           "pokemondescription"
@@ -57,7 +57,7 @@ func init() {
       "parameters": [
         {
           "type": "string",
-          "name": "name",
+          "name": "pokemonName",
           "in": "path",
           "required": true
         }
@@ -102,7 +102,7 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/v1/pokemon/description/{name}": {
+    "/v1/pokemon/{pokemonName}": {
       "get": {
         "tags": [
           "pokemondescription"
@@ -125,7 +125,7 @@ func init() {
       "parameters": [
         {
           "type": "string",
-          "name": "name",
+          "name": "pokemonName",
           "in": "path",
           "required": true
         }

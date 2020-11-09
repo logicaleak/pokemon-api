@@ -24,10 +24,10 @@ definitions:
       message:
         type: string
 paths:
-  /v1/pokemon/description/{name}:
+  /v1/pokemon/{pokemonName}:
     parameters:
       - type: string
-        name: name
+        name: pokemonName
         in: path
         required: true
     get:

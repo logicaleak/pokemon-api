@@ -2,6 +2,20 @@
 
 Pokemon-api is an API which provides Shakespearean description for pokemons in the `ruby` version of the game.
 
+# ENDPOINTS
+
+At the moment there is only one endpoint. In the next iteration it would be good to have an endpoint that returns available pokemons.
+
+```
+GET /v1/pokemon/{pokemon-name}
+
+{
+    "description": "Description of the pokemon",
+    "name": "Name of the pokemon"
+}
+```
+
+
 ```
 ├───api
 │   └───swagger

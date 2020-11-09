@@ -20,3 +20,12 @@ type Language struct {
 type Version struct {
 	Name string `json:"name"`
 }
+
+type Pokemons struct {
+	Count   int      `json:"count"`
+	Results []Result `json:"results"`
+}
+
+type Result struct {
+	Name string `json:"name"`
+}

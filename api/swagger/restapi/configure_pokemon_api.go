@@ -42,7 +42,7 @@ func configureAPI(api *operations.PokemonAPIAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.PokemondescriptionGetV1PokemonDescriptionNameHandler = pokemondescription.GetV1PokemonDescriptionNameHandlerFunc(loadImplementation().GetPokemonDescription)
+	api.PokemondescriptionGetV1PokemonPokemonNameHandler = pokemondescription.GetV1PokemonPokemonNameHandlerFunc(loadImplementation().GetPokemonDescription)
 
 	api.PreServerShutdown = func() {}
 
