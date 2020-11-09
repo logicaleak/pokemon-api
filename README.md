@@ -163,3 +163,4 @@ even though it would happen once within the time to live duration of the cache. 
 (or go routine in this app's case) within the app or as a sidecar to periodically pull all the existing pokemons for the ruby version and generate the descriptions and save into 
 the cache whenever possible. This would prevent the users from experiencing the extra wait during the first requests for a pokemon after the time to live of cache values end.
 Even though current version is not great, after the first request the average time for the requests completion is about 2 ms within the app, and 5 ms end to end for the user.
+- We need a rate limiter in the API, however that is a bigger piece of work to do properly, so it is skipped for this project
