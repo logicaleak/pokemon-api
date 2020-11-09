@@ -12,6 +12,7 @@ import (
 	"ozum.safaoglu/pokemon-api/api/swagger/implementation"
 	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations"
 	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemondescription"
+	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemons"
 )
 
 //go:generate swagger generate server --target ../../swagger --name PokemonAPI --spec ../swagger.yml --principal interface{}
@@ -43,6 +44,7 @@ func configureAPI(api *operations.PokemonAPIAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	api.PokemondescriptionGetV1PokemonPokemonNameHandler = pokemondescription.GetV1PokemonPokemonNameHandlerFunc(loadImplementation().GetPokemonDescription)
+	api.PokemonsGetV1PokemonHandler = pokemons.GetV1PokemonHandlerFunc(loadImplementation().GetPokemons)
 
 	api.PreServerShutdown = func() {}
 

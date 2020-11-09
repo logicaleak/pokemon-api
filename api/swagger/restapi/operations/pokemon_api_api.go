@@ -20,6 +20,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemondescription"
+	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemons"
 )
 
 // NewPokemonAPIAPI creates a new PokemonAPI instance
@@ -44,6 +45,9 @@ func NewPokemonAPIAPI(spec *loads.Document) *PokemonAPIAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		PokemonsGetV1PokemonHandler: pokemons.GetV1PokemonHandlerFunc(func(params pokemons.GetV1PokemonParams) middleware.Responder {
+			return middleware.NotImplemented("operation pokemons.GetV1Pokemon has not yet been implemented")
+		}),
 		PokemondescriptionGetV1PokemonPokemonNameHandler: pokemondescription.GetV1PokemonPokemonNameHandlerFunc(func(params pokemondescription.GetV1PokemonPokemonNameParams) middleware.Responder {
 			return middleware.NotImplemented("operation pokemondescription.GetV1PokemonPokemonName has not yet been implemented")
 		}),
@@ -81,6 +85,8 @@ type PokemonAPIAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// PokemonsGetV1PokemonHandler sets the operation handler for the get v1 pokemon operation
+	PokemonsGetV1PokemonHandler pokemons.GetV1PokemonHandler
 	// PokemondescriptionGetV1PokemonPokemonNameHandler sets the operation handler for the get v1 pokemon pokemon name operation
 	PokemondescriptionGetV1PokemonPokemonNameHandler pokemondescription.GetV1PokemonPokemonNameHandler
 	// ServeError is called when an error is received, there is a default handler
@@ -159,6 +165,9 @@ func (o *PokemonAPIAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.PokemonsGetV1PokemonHandler == nil {
+		unregistered = append(unregistered, "pokemons.GetV1PokemonHandler")
+	}
 	if o.PokemondescriptionGetV1PokemonPokemonNameHandler == nil {
 		unregistered = append(unregistered, "pokemondescription.GetV1PokemonPokemonNameHandler")
 	}
@@ -250,6 +259,10 @@ func (o *PokemonAPIAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/v1/pokemon"] = pokemons.NewGetV1Pokemon(o.context, o.PokemonsGetV1PokemonHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

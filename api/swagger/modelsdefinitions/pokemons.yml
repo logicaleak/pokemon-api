@@ -1,0 +1,9 @@
+Pokemons:
+  type: object
+  properties:
+    count: 
+      type: integer
+    results:
+      type: array
+      items:
+        $ref: "result.yml#/Result"

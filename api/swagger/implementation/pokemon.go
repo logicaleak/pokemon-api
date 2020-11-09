@@ -6,6 +6,7 @@ import (
 
 	"ozum.safaoglu/pokemon-api/api/swagger/models"
 	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemondescription"
+	"ozum.safaoglu/pokemon-api/api/swagger/restapi/operations/pokemons"
 	"ozum.safaoglu/pokemon-api/cache"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -59,4 +60,40 @@ func (s *ShakespeareanPokemonAPI) GetPokemonDescription(params pokemondescriptio
 		Description: description.Description,
 		Name:        description.Name,
 	})
+}
+
+func (s *ShakespeareanPokemonAPI) GetPokemons(params pokemons.GetV1PokemonParams) middleware.Responder {
+	start := time.Now()
+	logrus.Infof("Executing GetPokemons")
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
+	defer cancel()
+
+	offset := 0
+	if params.Offset != nil {
+		offset = int(*params.Offset)
+	}
+	pokemonsResp, err := s.spService.GetPokemons(ctx, offset)
+	if err != nil {
+		logrus.WithError(err).Errorf("Error while getting pokemons")
+		errStr := "An error occurred"
+		return pokemons.NewGetV1PokemonDefault(500).WithPayload(&models.Error{
+			Code:    500,
+			Message: &errStr,
+		})
+	}
+
+	elapsed := time.Since(start)
+	logrus.Infof("Execution of GetPokemons finished in %s", elapsed)
+
+	var pokemonsAPIResp models.Pokemons
+	pokemonsAPIResp.Count = int64(pokemonsResp.Count)
+	var results []*models.Result
+	for _, r := range pokemonsResp.Results {
+		results = append(results, &models.Result{
+			Name: r.Name,
+		})
+	}
+	pokemonsAPIResp.Results = results
+	return pokemons.NewGetV1PokemonOK().WithPayload(&pokemonsAPIResp)
 }

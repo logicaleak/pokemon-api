@@ -13,6 +13,8 @@ swagger: "2.0"
 definitions:
   description:
     $ref: "modelsdefinitions/description.yml#/Description"
+  pokemons:
+    $ref: "modelsdefinitions/pokemons.yml#/Pokemons"
   error:
     type: object
     required:
@@ -24,6 +26,23 @@ definitions:
       message:
         type: string
 paths:
+  /v1/pokemon:
+    parameters:
+      - type: integer
+        name: offset
+        in: query
+    get:
+      tags:
+        - pokemons
+      responses:
+        200:
+          description: List of pokemons
+          schema:
+            $ref: "#/definitions/pokemons"
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
   /v1/pokemon/{pokemonName}:
     parameters:
       - type: string

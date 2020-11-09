@@ -35,3 +35,26 @@ func (_m *MockPokeAPI) GetPokemonSpecies(_a0 context.Context, _a1 string) (*Poke
 
 	return r0, r1
 }
+
+// GetPokemons provides a mock function with given fields: ctx, offset
+func (_m *MockPokeAPI) GetPokemons(ctx context.Context, offset int) (*Pokemons, error) {
+	ret := _m.Called(ctx, offset)
+
+	var r0 *Pokemons
+	if rf, ok := ret.Get(0).(func(context.Context, int) *Pokemons); ok {
+		r0 = rf(ctx, offset)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*Pokemons)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, int) error); ok {
+		r1 = rf(ctx, offset)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}

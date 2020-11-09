@@ -34,6 +34,34 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
+    "/v1/pokemon": {
+      "get": {
+        "tags": [
+          "pokemons"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of pokemons",
+            "schema": {
+              "$ref": "#/definitions/pokemons"
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "integer",
+          "name": "offset",
+          "in": "query"
+        }
+      ]
+    },
     "/v1/pokemon/{pokemonName}": {
       "get": {
         "tags": [
@@ -82,6 +110,9 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "pokemons": {
+      "$ref": "modelsdefinitions/pokemons.yml#/Pokemons"
     }
   }
 }`))
@@ -102,6 +133,34 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
+    "/v1/pokemon": {
+      "get": {
+        "tags": [
+          "pokemons"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of pokemons",
+            "schema": {
+              "$ref": "#/definitions/pokemons"
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "integer",
+          "name": "offset",
+          "in": "query"
+        }
+      ]
+    },
     "/v1/pokemon/{pokemonName}": {
       "get": {
         "tags": [
@@ -158,6 +217,29 @@ func init() {
         },
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "pokemons": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/result"
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
         }
       }
     }

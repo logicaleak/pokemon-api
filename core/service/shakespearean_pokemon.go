@@ -12,6 +12,7 @@ import (
 // for the given pokemon name
 type ShakespeareanPokemon interface {
 	GetDescription(context.Context, string) (*PokemonDescription, error)
+	GetPokemons(context.Context, int) (*pokeapi.Pokemons, error)
 }
 
 // NewShakespeareanPokemon returns the implementation of ShakespeareanPokemon interface
@@ -40,6 +41,10 @@ func (d *defaultShakespeareanPokemonImpl) generateDescriptionFrom(species *pokea
 		}
 	}
 	return b.String()
+}
+
+func (d *defaultShakespeareanPokemonImpl) GetPokemons(ctx context.Context, offset int) (*pokeapi.Pokemons, error) {
+	return d.pokeAPI.GetPokemons(ctx, offset)
 }
 
 // GetDescription first calls pokeapi to retrieve pokemon flavour descriptions and tries its best to combine something

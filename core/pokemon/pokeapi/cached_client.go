@@ -44,6 +44,10 @@ func (c *cachedPokeAPI) marshalForCache(species *PokemonSpecies) (string, error)
 	return string(bytes), nil
 }
 
+func (c *cachedPokeAPI) GetPokemons(ctx context.Context, offset int) (*Pokemons, error) {
+	return c.pokeAPI.GetPokemons(ctx, offset)
+}
+
 func (c *cachedPokeAPI) GetPokemonSpecies(ctx context.Context, name string) (*PokemonSpecies, error) {
 	val, err := c.cache.Get(ctx, c.generateCacheKey(name))
 	if err != nil && err != redis.Nil {

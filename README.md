@@ -136,6 +136,7 @@ Redis has to be run first as the app is dependent on it for caching purposes
 
 
 # Future additions
+- Tests are missing for the pokemons API, unforunately no time left for it
 - Redis integration tests
 - e2e tests would be nice
 - Load tests should be added

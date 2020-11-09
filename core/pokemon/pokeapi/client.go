@@ -3,6 +3,7 @@ package pokeapi
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 
 	resty "github.com/go-resty/resty/v2"
@@ -35,7 +36,7 @@ func (p *pokeAPIImpl) GetPokemons(ctx context.Context, offset int) (*Pokemons, e
 	resp, err := p.restyClient.R().
 		SetContext(ctx).
 		EnableTrace().
-		Get(p.baseURI + "/pokemon")
+		Get(p.baseURI + fmt.Sprintf("/pokemon?offset=%d", offset))
 	if err != nil {
 		return nil, errors.Wrap(err, "Error while requesting GET /pokemon")
 	}
@@ -48,7 +49,7 @@ func (p *pokeAPIImpl) GetPokemons(ctx context.Context, offset int) (*Pokemons, e
 	duration := time.Since(n)
 	logrus.WithField("duration", duration).Infof("Finished GET /pokemon without issues in %s", duration)
 
-	return pokemons, nil
+	return &pokemons, nil
 }
 
 // GetPokemon returns the pokemon object from the poke-api
