@@ -142,8 +142,8 @@ If for some reason, docker compose is not accessable, redis and the app can be r
 
 ```bash
 docker build -t pokemon-api .
-docker run -d -p 6379:6379 redis
-docker run -d -p 8080:8080 --env ENV=local pokemon-api:latest
+docker run --name redis -d -p 6379:6379 redis
+docker run --link redis -p 8080:8080 --env ENV=local pokemon-api:latest
 ```
 
 Redis has to be run first as the app is dependent on it for caching purposes
