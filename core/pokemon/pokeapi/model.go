@@ -9,9 +9,14 @@ type PokemonSpecies struct {
 type FlavourTextEntries struct {
 	FlavorText string   `json:"flavor_text"`
 	Language   Language `json:"language"`
+	Version    Version  `json:"version"`
 }
 
 // Language for flavour text entry
 type Language struct {
+	Name string `json:"name"`
+}
+
+type Version struct {
 	Name string `json:"name"`
 }

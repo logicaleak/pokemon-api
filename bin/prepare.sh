@@ -1,0 +1,1 @@
+cd tooling && docker build -t tooling .

@@ -32,7 +32,7 @@ type defaultShakespeareanPokemonImpl struct {
 func (d *defaultShakespeareanPokemonImpl) generateDescriptionFrom(species *pokeapi.PokemonSpecies) string {
 	var b strings.Builder
 	for _, e := range species.FlavourTextEntries {
-		if e.Language.Name == d.lang {
+		if e.Language.Name == d.lang && e.Version.Name == "ruby" {
 			b.WriteString(e.FlavorText)
 			b.WriteString(" ")
 		}
