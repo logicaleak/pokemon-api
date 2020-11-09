@@ -73,12 +73,34 @@ bin/make.sh unit-tests
 ```
 This command will run the makefile target `unit-tests` within the `tooling` container.
 
+If developing on windows, use the following
+
+```bash
+bin/make.sh --win unit-tests
+```
+
 ## Generating swagger files
 To generate new swagger files if any change to `swagger.yml` is made. Run the following:
 
 ```bash
 bin/make.sh swagger
 ```
+If developing on windows, use the following
+
+```bash
+bin/make.sh --win swagger
+```
+
+## Generating mocks with `mockify`
+```bash
+bin/make.sh generate-mocks
+```
+
+If on a windows machine:
+```bash
+bin/make.sh --win generate-mocks
+```
+
 
 ## Running the project
 To run the project simply use the `docker-compose`.
@@ -96,3 +118,10 @@ docker run -d -p 8080:8080 --env ENV=local pokemon-api:latest
 ```
 
 Redis has to be run first as the app is dependent on it for caching purposes
+
+
+# Future additions
+- Redis integration tests
+- e2e tests would be nice
+- Load tests should be added
+- TLS configuration would be needed to be done
