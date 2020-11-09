@@ -29,6 +29,8 @@ type defaultShakespeareanPokemonImpl struct {
 	lang     string
 }
 
+// generateDescriptionFrom tries to generate a description from the list of flavours. Taking example from the provided docs
+// ruby version of the pokemons are used, and all the values are concatanated in this function.
 func (d *defaultShakespeareanPokemonImpl) generateDescriptionFrom(species *pokeapi.PokemonSpecies) string {
 	var b strings.Builder
 	for _, e := range species.FlavourTextEntries {

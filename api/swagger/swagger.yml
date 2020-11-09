@@ -24,7 +24,7 @@ definitions:
       message:
         type: string
 paths:
-  /pokemon/{name}:
+  /v1/pokemon/description/{name}:
     parameters:
       - type: string
         name: name

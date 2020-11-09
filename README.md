@@ -43,6 +43,7 @@ Config folder contains configuration functionality of the project. At the moment
 
 # `core` folder
 Core folder contains the main functionality of the app. Integrations with the `poke-api` and the `shakespeare-translation` api is contained within this folder.
+
 `core/pokemon/pokeapi` contains the integration with the `poke-api`.
 
 `core/shakespeare` contains the integration with `shakespeare-translation`.
@@ -55,7 +56,7 @@ Dev environment is designed to be crossplatform and should be able to work on a 
 
 ## Prepare the dev environment
 
-Execute the following, which will create a container named `tooling` that is workable to run any operations on the code base regardless of the platform development is being made.
+Execute the following, which will create a container named `tooling` that is workable to run any operations on the code base regardless of the platform on which the development is being made.
 
 ```bash
 bin/prepare.sh
@@ -125,3 +126,11 @@ Redis has to be run first as the app is dependent on it for caching purposes
 - e2e tests would be nice
 - Load tests should be added
 - TLS configuration would be needed to be done
+- Make target to generate swagger documentation
+- Sidecar app to serve swagger docs
+- Logging in the api calls can be made into a generic design buy wrapping the functions
+- At the moment the first requests which does not hit the cache takes about 500-600 milliseconds to complete, which is not great for a production endpoint
+even though it would happen once within the time to live duration of the cache. To make this better, a second app could be created either as a separate thread
+(or go routine in this app's case) within the app or as a sidecar to periodically pull all the existing pokemons for the ruby version and generate the descriptions and save into 
+the cache whenever possible. This would prevent the users from experiencing the extra wait during the first requests for a pokemon after the time to live of cache values end.
+Even though current version is not great, after the first request the average time for the requests completion is about 2 ms within the app, and 5 ms end to end for the user.

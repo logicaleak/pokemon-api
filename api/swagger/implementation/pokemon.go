@@ -38,7 +38,9 @@ func NewShakespeareanPokemonAPI() *ShakespeareanPokemonAPI {
 
 // GetPokemon implements the swagger api endpoint
 // It returns the description of the passed pokemon in shakespearean English
-func (s *ShakespeareanPokemonAPI) GetPokemonDescription(params pokemondescription.GetPokemonNameParams) middleware.Responder {
+func (s *ShakespeareanPokemonAPI) GetPokemonDescription(params pokemondescription.GetV1PokemonDescriptionNameParams) middleware.Responder {
+	start := time.Now()
+	logrus.Infof("Executing GetPokemonDescription for pokemon %s", params.Name)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancel()
 	description, err := s.spService.GetDescription(ctx, params.Name)
@@ -51,6 +53,8 @@ func (s *ShakespeareanPokemonAPI) GetPokemonDescription(params pokemondescriptio
 		})
 	}
 
+	elapsed := time.Since(start)
+	logrus.Infof("Execution of GetPokemonDescription finished in %s", elapsed)
 	return pokemondescription.NewGetPokemonNameOK().WithPayload(&models.Description{
 		Description: description.Description,
 		Name:        description.Name,

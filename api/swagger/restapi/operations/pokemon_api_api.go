@@ -44,8 +44,8 @@ func NewPokemonAPIAPI(spec *loads.Document) *PokemonAPIAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		PokemondescriptionGetPokemonNameHandler: pokemondescription.GetPokemonNameHandlerFunc(func(params pokemondescription.GetPokemonNameParams) middleware.Responder {
-			return middleware.NotImplemented("operation pokemondescription.GetPokemonName has not yet been implemented")
+		PokemondescriptionGetV1PokemonDescriptionNameHandler: pokemondescription.GetV1PokemonDescriptionNameHandlerFunc(func(params pokemondescription.GetV1PokemonDescriptionNameParams) middleware.Responder {
+			return middleware.NotImplemented("operation pokemondescription.GetV1PokemonDescriptionName has not yet been implemented")
 		}),
 	}
 }
@@ -81,8 +81,8 @@ type PokemonAPIAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
-	// PokemondescriptionGetPokemonNameHandler sets the operation handler for the get pokemon name operation
-	PokemondescriptionGetPokemonNameHandler pokemondescription.GetPokemonNameHandler
+	// PokemondescriptionGetV1PokemonDescriptionNameHandler sets the operation handler for the get v1 pokemon description name operation
+	PokemondescriptionGetV1PokemonDescriptionNameHandler pokemondescription.GetV1PokemonDescriptionNameHandler
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
@@ -159,8 +159,8 @@ func (o *PokemonAPIAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.PokemondescriptionGetPokemonNameHandler == nil {
-		unregistered = append(unregistered, "pokemondescription.GetPokemonNameHandler")
+	if o.PokemondescriptionGetV1PokemonDescriptionNameHandler == nil {
+		unregistered = append(unregistered, "pokemondescription.GetV1PokemonDescriptionNameHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -253,7 +253,7 @@ func (o *PokemonAPIAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/pokemon/{name}"] = pokemondescription.NewGetPokemonName(o.context, o.PokemondescriptionGetPokemonNameHandler)
+	o.handlers["GET"]["/v1/pokemon/description/{name}"] = pokemondescription.NewGetV1PokemonDescriptionName(o.context, o.PokemondescriptionGetV1PokemonDescriptionNameHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

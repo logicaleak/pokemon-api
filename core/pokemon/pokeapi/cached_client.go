@@ -67,7 +67,7 @@ func (c *cachedPokeAPI) GetPokemonSpecies(ctx context.Context, name string) (*Po
 		return nil, err
 	}
 
-	err = c.cache.Set(ctx, c.generateCacheKey(name), marshalled, time.Second*10)
+	err = c.cache.Set(ctx, c.generateCacheKey(name), marshalled, time.Hour*48)
 	if err != nil {
 		logrus.Warnf("Error while setting the cache for pokemon species: %s", err)
 	}

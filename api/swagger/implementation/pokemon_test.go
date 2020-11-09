@@ -24,7 +24,7 @@ func TestShakespeareanPokemonAPI_GetPokemonDescription(t *testing.T) {
 	}, nil)
 	mockService.On("GetDescription", mock.Anything, pokemon2).Return(nil, errors.New("Some error"))
 	type args struct {
-		params pokemondescription.GetPokemonNameParams
+		params pokemondescription.GetV1PokemonDescriptionNameParams
 	}
 	tests := []struct {
 		name string
@@ -38,7 +38,7 @@ func TestShakespeareanPokemonAPI_GetPokemonDescription(t *testing.T) {
 				spService: mockService,
 			},
 			args: args{
-				params: pokemondescription.GetPokemonNameParams{
+				params: pokemondescription.GetV1PokemonDescriptionNameParams{
 					Name: pokemon,
 				},
 			},
@@ -53,7 +53,7 @@ func TestShakespeareanPokemonAPI_GetPokemonDescription(t *testing.T) {
 				spService: mockService,
 			},
 			args: args{
-				params: pokemondescription.GetPokemonNameParams{
+				params: pokemondescription.GetV1PokemonDescriptionNameParams{
 					Name: pokemon2,
 				},
 			},

@@ -85,7 +85,7 @@ func (c *cachedSPClient) Translate(ctx context.Context, text string) (*Translati
 		return nil, err
 	}
 
-	err = c.cache.Set(ctx, cacheKey, marshaled, time.Second*10)
+	err = c.cache.Set(ctx, cacheKey, marshaled, time.Hour*48)
 	if err != nil {
 		logrus.Warnf("Error while setting the cache for translation: %s", err)
 	}

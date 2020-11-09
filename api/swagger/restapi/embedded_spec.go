@@ -34,7 +34,7 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/pokemon/{name}": {
+    "/v1/pokemon/description/{name}": {
       "get": {
         "tags": [
           "pokemondescription"
@@ -102,7 +102,7 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/pokemon/{name}": {
+    "/v1/pokemon/description/{name}": {
       "get": {
         "tags": [
           "pokemondescription"
